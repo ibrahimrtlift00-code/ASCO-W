@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -26,7 +25,6 @@ overflow:hidden;
 }
 
 body{
-
 display:flex;
 justify-content:center;
 align-items:center;
@@ -42,7 +40,6 @@ padding:12px;
 }
 
 .card{
-
 width:100%;
 max-width:600px;
 
@@ -63,49 +60,36 @@ color:#fff;
 }
 
 .logo{
-
 font-size:28px;
 font-weight:700;
-
 margin-bottom:18px;
 }
 
 .message{
-
 font-size:clamp(22px,5vw,34px);
 font-weight:700;
-
 line-height:1.6;
-
 margin-bottom:15px;
 }
 
 .subtitle{
-
 font-size:16px;
-
 opacity:.9;
-
 margin-bottom:18px;
 }
 
 .heart{
-
 font-size:28px;
-
 color:#ff5c7c;
-
 animation:beat 1.8s infinite;
 }
 
 @keyframes beat{
-
 0%{transform:scale(1);}
 25%{transform:scale(1.15);}
 50%{transform:scale(1);}
 75%{transform:scale(1.15);}
 100%{transform:scale(1);}
-
 }
 
 @media (max-width:480px){
@@ -157,19 +141,31 @@ Welcome To ASCO
 
 </div>
 
-<script src="messages.js"></script>
+<script src="./messages.js"></script>
 
 <script>
 
+window.onload = function(){
+
 const params = new URLSearchParams(window.location.search);
 
-const card = params.get("card");
+const card = params.get("card") || "001";
+
+if(typeof messages !== "undefined"){
 
 document.getElementById("message").innerText =
 messages[card] || "الرسالة غير موجودة";
+
+}else{
+
+document.getElementById("message").innerText =
+"خطأ في تحميل ملف الرسائل";
+
+}
+
+};
 
 </script>
 
 </body>
 </html>
-```
