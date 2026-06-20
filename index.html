@@ -141,31 +141,174 @@ Welcome To ASCO
 
 </div>
 
+
 <script src="./messages.js"></script>
 
 <script>
 
 window.onload = function(){
 
-const params = new URLSearchParams(window.location.search);
-
-const card = params.get("card") || "001";
-
-if(typeof messages !== "undefined"){
-
+if(typeof messages === "undefined"){
 document.getElementById("message").innerText =
-messages[card] || "الرسالة غير موجودة";
+"خطأ في تحميل ملف الرسائل";
+return;
+}
+
+const keys = Object.keys(messages);
+
+const today = new Date().toISOString().split('T')[0];
+
+let savedDate = localStorage.getItem("ascoDate");
+let savedMessage = localStorage.getItem("ascoMessage");
+let savedLuck = localStorage.getItem("ascoLuck");
+
+if(savedDate !== today){
+
+const randomMessage =
+keys[Math.floor(Math.random() * keys.length)];
+
+let luck;
+const chance = Math.random() * 100;
+
+if(chance < 1){
+
+luck = 100;
+
+}else if(chance < 61){
+
+luck = Math.floor(Math.random() * 40) + 60;
+
+}else if(chance < 86){
+
+luck = Math.floor(Math.random() * 30) + 30;
 
 }else{
 
-document.getElementById("message").innerText =
-"خطأ في تحميل ملف الرسائل";
+luck = Math.floor(Math.random() * 25) + 5;
 
 }
+
+localStorage.setItem("ascoDate", today);
+localStorage.setItem("ascoMessage", randomMessage);
+localStorage.setItem("ascoLuck", luck);
+
+savedMessage = randomMessage;
+savedLuck = luck;
+}
+
+savedLuck = parseInt(savedLuck);
+
+const box = document.getElementById("message");
+
+let counter = 0;
+
+const timer = setInterval(function(){
+
+box.innerHTML = `
+<div style="font-size:18px;opacity:.8">
+جاري تحليل حظك اليوم...
+</div>
+
+<div style="
+font-size:64px;
+font-weight:700;
+color:#ffd86b;
+margin-top:10px;
+">
+${counter}%
+</div>
+`;
+
+counter++;
+
+if(counter > savedLuck){
+
+clearInterval(timer);
+
+setTimeout(function(){
+
+let title = "";
+
+if(savedLuck === 100){
+
+title = `
+<div style="
+margin-top:12px;
+font-size:18px;
+color:#ffd86b;
+font-weight:700;
+">
+🏆 أنت من 1% من موظفي ASCO
+<br>
+الذين حصلوا على حظ كامل اليوم
+</div>
+`;
+
+}else if(savedLuck >= 60){
+
+title = `
+<div style="margin-top:12px;font-size:18px;">
+⭐ حظ ممتاز
+</div>
+`;
+
+}else if(savedLuck >= 30){
+
+title = `
+<div style="margin-top:12px;font-size:18px;">
+✨ يوم جيد
+</div>
+`;
+
+}else{
+
+title = `
+<div style="margin-top:12px;font-size:18px;">
+💪 استمر بالتألق
+</div>
+`;
+
+}
+
+box.innerHTML = `
+
+<div style="font-size:18px;opacity:.8">
+نسبة حظك اليوم
+</div>
+
+<div style="
+font-size:64px;
+font-weight:700;
+color:#ffd86b;
+margin-top:10px;
+">
+${savedLuck}%
+</div>
+
+${title}
+
+<div style="
+margin-top:25px;
+font-size:26px;
+line-height:1.8;
+font-weight:700;
+">
+${messages[savedMessage]}
+</div>
+
+`;
+
+},500);
+
+}
+
+},15);
 
 };
 
 </script>
+
+  
 
 </body>
 </html>
