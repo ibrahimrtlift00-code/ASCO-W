@@ -1,12 +1,107 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ASCO Welcome</title>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Cairo,sans-serif;
+
+    background:linear-gradient(
+    -45deg,
+    #0f172a,
+    #1e3a8a,
+    #2563eb,
+    #3b82f6);
+
+    background-size:400% 400%;
+    animation:bg 10s ease infinite;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.card{
+    width:85%;
+    max-width:600px;
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    text-align:center;
+
+    color:white;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.message{
+    font-size:28px;
+    line-height:1.8;
+}
+
+</style>
 </head>
+
 <body>
 
-<h1>اهلاً بكم في ASCO</h1>
+<div class="card">
+
+<div class="logo">
+ASCO GROUP
+</div>
+
+<div class="message" id="message">
+جاري التحميل...
+</div>
+
+</div>
+
+<script>
+
+const messages = {
+
+"001":"اهلاً بكم في ASCO",
+
+"002":"شكراً لجهودكم",
+
+"003":"نتمنى لكم دوام النجاح"
+
+};
+
+const params =
+new URLSearchParams(window.location.search);
+
+const card =
+params.get("card");
+
+document.getElementById("message").innerText =
+messages[card] || "الرسالة غير موجودة";
+
+</script>
 
 </body>
 </html>
