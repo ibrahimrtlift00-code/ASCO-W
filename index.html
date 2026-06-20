@@ -19,11 +19,13 @@ font-family:'Cairo',sans-serif;
 }
 
 body{
-height:100vh;
-overflow:hidden;
+min-height:100dvh;
+padding:20px;
+
 display:flex;
 justify-content:center;
 align-items:center;
+
 position:relative;
 
 background:linear-gradient(
@@ -35,6 +37,9 @@ background:linear-gradient(
 
 background-size:400% 400%;
 animation:gradientMove 15s ease infinite;
+
+overflow-x:hidden;
+overflow-y:auto;
 }
 
 @keyframes gradientMove{
@@ -50,6 +55,7 @@ position:absolute;
 border-radius:50%;
 filter:blur(100px);
 opacity:.5;
+pointer-events:none;
 }
 
 .orb1{
@@ -102,6 +108,7 @@ background:white;
 border-radius:50%;
 opacity:.5;
 animation:particleFloat linear infinite;
+pointer-events:none;
 }
 
 @keyframes particleFloat{
@@ -119,16 +126,15 @@ opacity:0;
 }
 
 .card{
-
 position:relative;
 z-index:10;
 
-width:90%;
+width:100%;
 max-width:650px;
 
-padding:50px;
+padding:40px 25px;
 
-border-radius:35px;
+border-radius:30px;
 
 background:
 linear-gradient(
@@ -147,8 +153,14 @@ box-shadow:
 overflow:hidden;
 
 text-align:center;
-
 color:white;
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+
+gap:12px;
 }
 
 /* glass reflection */
@@ -184,16 +196,26 @@ transform:translateX(40%);
 font-size:34px;
 font-weight:700;
 letter-spacing:2px;
-margin-bottom:25px;
+position:relative;
+z-index:2;
+}
+
+.message-container{
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100px;
+position:relative;
+z-index:2;
 }
 
 .message{
-font-size:32px;
+font-size:clamp(22px,5vw,32px);
 font-weight:700;
-line-height:1.8;
-position:relative;
-z-index:2;
-
+line-height:1.7;
+word-break:break-word;
+text-align:center;
 animation:fadeUp 1s ease;
 }
 
@@ -209,19 +231,19 @@ transform:translateY(0);
 }
 
 .subtitle{
-margin-top:20px;
 font-size:18px;
 opacity:.85;
 position:relative;
 z-index:2;
 }
+
 .heart-container{
-margin-top:25px;
 display:flex;
 justify-content:center;
 align-items:center;
 position:relative;
 z-index:2;
+margin-top:5px;
 }
 
 .heart-pulse{
@@ -277,17 +299,32 @@ transform:translate(-50%,-50%) scale(5);
 opacity:0;
 }
 }
+
 @media(max-width:768px){
 
-.card{
-padding:35px;
+body{
+padding:15px;
 }
 
-.message{
-font-size:26px;
+.card{
+padding:30px 20px;
+border-radius:25px;
 }
 
 .logo{
+font-size:24px;
+}
+
+.message{
+font-size:24px;
+line-height:1.6;
+}
+
+.subtitle{
+font-size:15px;
+}
+
+.heart-pulse{
 font-size:28px;
 }
 
@@ -311,8 +348,10 @@ font-size:28px;
 ASCO GROUP
 </div>
 
+<div class="message-container">
 <div id="message" class="message">
 جاري التحميل...
+</div>
 </div>
 
 <div class="subtitle">
@@ -320,7 +359,7 @@ Welcome To ASCO
 </div>
 
 <div class="heart-container">
-    <div class="heart-pulse">❤</div>
+<div class="heart-pulse">❤</div>
 </div>
 
 </div>
@@ -362,13 +401,11 @@ const messages={
 
 };
 
-const params =
-new URLSearchParams(window.location.search);
+const params=new URLSearchParams(window.location.search);
 
-const card =
-params.get("card");
+const card=params.get("card");
 
-document.getElementById("message").innerText =
+document.getElementById("message").innerText=
 messages[card] || "الرسالة غير موجودة";
 
 </script>
