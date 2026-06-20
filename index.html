@@ -149,63 +149,89 @@ Welcome To ASCO
 window.onload = function(){
 
 if(typeof messages === "undefined"){
+
 document.getElementById("message").innerText =
 "خطأ في تحميل ملف الرسائل";
-return;
-}
 
-const keys = Object.keys(messages);
+return;
+
+}
 
 const today = new Date().toISOString().split('T')[0];
 
-let savedDate = localStorage.getItem("ascoDate");
-let savedMessage = localStorage.getItem("ascoMessage");
-let savedLuck = localStorage.getItem("ascoLuck");
+const fingerprint =
+navigator.userAgent +
+navigator.language +
+screen.width +
+screen.height +
+today;
 
-if(savedDate !== today){
+function hashCode(str){
 
-const randomMessage =
-keys[Math.floor(Math.random() * keys.length)];
+let hash = 0;
+
+for(let i = 0; i < str.length; i++){
+
+hash =
+((hash << 5) - hash) +
+str.charCodeAt(i);
+
+hash |= 0;
+
+}
+
+return Math.abs(hash);
+
+}
+
+const seed = hashCode(fingerprint);
+
+const keys = Object.keys(messages);
+
+const messageIndex = seed % keys.length;
+
+const selectedMessage =
+messages[keys[messageIndex]];
+
+const luckSeed = seed % 1000;
 
 let luck;
-const chance = Math.random() * 100;
 
-if(chance < 1){
+if(luckSeed < 10){
 
 luck = 100;
 
-}else if(chance < 61){
+}else if(luckSeed < 610){
 
-luck = Math.floor(Math.random() * 40) + 60;
+luck =
+60 + (seed % 40);
 
-}else if(chance < 86){
+}else if(luckSeed < 860){
 
-luck = Math.floor(Math.random() * 30) + 30;
+luck =
+30 + (seed % 30);
 
 }else{
 
-luck = Math.floor(Math.random() * 25) + 5;
+luck =
+5 + (seed % 25);
 
 }
 
-localStorage.setItem("ascoDate", today);
-localStorage.setItem("ascoMessage", randomMessage);
-localStorage.setItem("ascoLuck", luck);
-
-savedMessage = randomMessage;
-savedLuck = luck;
-}
-
-savedLuck = parseInt(savedLuck);
-
-const box = document.getElementById("message");
+const messageBox =
+document.getElementById("message");
 
 let counter = 0;
 
-const timer = setInterval(function(){
+const timer = setInterval(() => {
 
-box.innerHTML = `
-<div style="font-size:18px;opacity:.8">
+messageBox.innerHTML = `
+
+<div style="
+font-size:18px;
+opacity:.8;
+margin-bottom:10px;
+">
 جاري تحليل حظك اليوم...
 </div>
 
@@ -213,66 +239,91 @@ box.innerHTML = `
 font-size:64px;
 font-weight:700;
 color:#ffd86b;
-margin-top:10px;
+text-shadow:0 0 20px rgba(255,216,107,.5);
 ">
 ${counter}%
 </div>
+
 `;
 
 counter++;
 
-if(counter > savedLuck){
+if(counter > luck){
 
 clearInterval(timer);
 
-setTimeout(function(){
+setTimeout(() => {
 
-let title = "";
+let badge = "";
 
-if(savedLuck === 100){
+if(luck === 100){
 
-title = `
+badge = `
+
 <div style="
-margin-top:12px;
+margin-top:15px;
 font-size:18px;
-color:#ffd86b;
 font-weight:700;
+color:#ffd86b;
+line-height:1.8;
 ">
-🏆 أنت من 1% من موظفي ASCO
+🏆 تهانينا
+<br>
+أنت من 1% من موظفي ASCO
 <br>
 الذين حصلوا على حظ كامل اليوم
 </div>
+
 `;
 
-}else if(savedLuck >= 60){
+}else if(luck >= 60){
 
-title = `
-<div style="margin-top:12px;font-size:18px;">
+badge = `
+
+<div style="
+margin-top:15px;
+font-size:18px;
+">
 ⭐ حظ ممتاز
 </div>
+
 `;
 
-}else if(savedLuck >= 30){
+}else if(luck >= 30){
 
-title = `
-<div style="margin-top:12px;font-size:18px;">
+badge = `
+
+<div style="
+margin-top:15px;
+font-size:18px;
+">
 ✨ يوم جيد
 </div>
+
 `;
 
 }else{
 
-title = `
-<div style="margin-top:12px;font-size:18px;">
+badge = `
+
+<div style="
+margin-top:15px;
+font-size:18px;
+">
 💪 استمر بالتألق
 </div>
+
 `;
 
 }
 
-box.innerHTML = `
+messageBox.innerHTML = `
 
-<div style="font-size:18px;opacity:.8">
+<div style="
+font-size:18px;
+opacity:.8;
+margin-bottom:10px;
+">
 نسبة حظك اليوم
 </div>
 
@@ -280,12 +331,12 @@ box.innerHTML = `
 font-size:64px;
 font-weight:700;
 color:#ffd86b;
-margin-top:10px;
+text-shadow:0 0 20px rgba(255,216,107,.5);
 ">
-${savedLuck}%
+${luck}%
 </div>
 
-${title}
+${badge}
 
 <div style="
 margin-top:25px;
@@ -293,7 +344,7 @@ font-size:26px;
 line-height:1.8;
 font-weight:700;
 ">
-${messages[savedMessage]}
+${selectedMessage}
 </div>
 
 `;
@@ -307,7 +358,6 @@ ${messages[savedMessage]}
 };
 
 </script>
-
   
 
 </body>
