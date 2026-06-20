@@ -17,116 +17,108 @@ box-sizing:border-box;
 font-family:'Cairo',sans-serif;
 }
 
+html,
 body{
-min-height:100vh;
+width:100%;
+height:100%;
+overflow:hidden;
+}
+
+body{
+
 display:flex;
 justify-content:center;
 align-items:center;
-padding:20px;
-overflow:hidden;
 
 background:linear-gradient(
 135deg,
-#0a1f44,
-#1c5db6,
+#081229,
+#0f2f67,
 #3576b9
 );
 
-background-size:300% 300%;
-animation:bgMove 12s ease infinite;
-}
-
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+padding:12px;
 }
 
 .card{
+
 width:100%;
-max-width:650px;
+max-width:600px;
 
-padding:35px 25px;
+padding:30px 20px;
 
-background:rgba(255,255,255,0.12);
+background:rgba(255,255,255,.12);
 
-border:1px solid rgba(255,255,255,0.2);
+border:1px solid rgba(255,255,255,.15);
 
-border-radius:28px;
+border-radius:24px;
 
 box-shadow:
-0 10px 30px rgba(0,0,0,.25);
+0 10px 25px rgba(0,0,0,.25);
 
 text-align:center;
 
-color:white;
+color:#fff;
 }
 
 .logo{
-font-size:32px;
+
+font-size:28px;
 font-weight:700;
-margin-bottom:20px;
-letter-spacing:1px;
+
+margin-bottom:18px;
 }
 
 .message{
+
 font-size:clamp(22px,5vw,34px);
 font-weight:700;
-line-height:1.7;
+
+line-height:1.6;
+
 margin-bottom:15px;
-
-animation:fadeUp .8s ease;
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
 }
 
 .subtitle{
-font-size:17px;
-opacity:.9;
-margin-bottom:20px;
-}
 
-.heart-container{
-display:flex;
-justify-content:center;
+font-size:16px;
+
+opacity:.9;
+
+margin-bottom:18px;
 }
 
 .heart{
-font-size:32px;
-color:#ff5b7d;
-animation:heartBeat 1.8s infinite;
+
+font-size:28px;
+
+color:#ff5c7c;
+
+animation:beat 1.8s infinite;
 }
 
-@keyframes heartBeat{
+@keyframes beat{
+
 0%{transform:scale(1);}
-20%{transform:scale(1.15);}
-40%{transform:scale(1);}
-60%{transform:scale(1.2);}
-80%{transform:scale(1);}
+25%{transform:scale(1.15);}
+50%{transform:scale(1);}
+75%{transform:scale(1.15);}
 100%{transform:scale(1);}
+
 }
 
-@media(max-width:768px){
+@media (max-width:480px){
 
 .card{
-padding:28px 18px;
+padding:24px 16px;
 }
 
 .logo{
-font-size:24px;
+font-size:22px;
 }
 
 .message{
-font-size:24px;
+font-size:22px;
 }
 
 .subtitle{
@@ -134,7 +126,7 @@ font-size:14px;
 }
 
 .heart{
-font-size:26px;
+font-size:24px;
 }
 
 }
@@ -158,8 +150,8 @@ ASCO GROUP
 Welcome To ASCO
 </div>
 
-<div class="heart-container">
-<div class="heart">❤</div>
+<div class="heart">
+❤
 </div>
 
 </div>
@@ -175,6 +167,7 @@ const messages = {
 };
 
 const params = new URLSearchParams(window.location.search);
+
 const card = params.get("card");
 
 document.getElementById("message").innerText =
