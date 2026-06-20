@@ -1,93 +1,298 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>ASCO Welcome</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
 
-body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-family:Cairo,sans-serif;
-
-    background:linear-gradient(
-    -45deg,
-    #0f172a,
-    #1e3a8a,
-    #2563eb,
-    #3b82f6);
-
-    background-size:400% 400%;
-    animation:bg 10s ease infinite;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
 }
 
-@keyframes bg{
+body{
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+
+background:linear-gradient(
+-45deg,
+#081229,
+#0f2f67,
+#1c5db6,
+#3576b9);
+
+background-size:400% 400%;
+animation:gradientMove 15s ease infinite;
+}
+
+@keyframes gradientMove{
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
 }
 
+/* glowing orbs */
+
+.orb{
+position:absolute;
+border-radius:50%;
+filter:blur(100px);
+opacity:.5;
+}
+
+.orb1{
+width:350px;
+height:350px;
+background:#5ea3ff;
+top:-100px;
+left:-100px;
+animation:float1 18s infinite alternate ease-in-out;
+}
+
+.orb2{
+width:280px;
+height:280px;
+background:#1f5cff;
+right:-80px;
+bottom:-80px;
+animation:float2 20s infinite alternate ease-in-out;
+}
+
+.orb3{
+width:220px;
+height:220px;
+background:#9fd2ff;
+top:50%;
+left:55%;
+animation:float3 16s infinite alternate ease-in-out;
+}
+
+@keyframes float1{
+from{transform:translate(0,0);}
+to{transform:translate(100px,80px);}
+}
+
+@keyframes float2{
+from{transform:translate(0,0);}
+to{transform:translate(-120px,-70px);}
+}
+
+@keyframes float3{
+from{transform:translate(0,0);}
+to{transform:translate(-80px,120px);}
+}
+
+/* particles */
+
+.particle{
+position:absolute;
+background:white;
+border-radius:50%;
+opacity:.5;
+animation:particleFloat linear infinite;
+}
+
+@keyframes particleFloat{
+from{
+transform:translateY(30px);
+opacity:0;
+}
+50%{
+opacity:.6;
+}
+to{
+transform:translateY(-120vh);
+opacity:0;
+}
+}
+
 .card{
-    width:85%;
-    max-width:600px;
 
-    background:rgba(255,255,255,.15);
+position:relative;
+z-index:10;
 
-    backdrop-filter:blur(20px);
+width:90%;
+max-width:650px;
 
-    border:1px solid rgba(255,255,255,.2);
+padding:50px;
 
-    border-radius:25px;
+border-radius:35px;
 
-    padding:40px;
+background:
+linear-gradient(
+135deg,
+rgba(255,255,255,.20),
+rgba(255,255,255,.05));
 
-    text-align:center;
+backdrop-filter:blur(25px);
+-webkit-backdrop-filter:blur(25px);
 
-    color:white;
+border:1px solid rgba(255,255,255,.2);
+
+box-shadow:
+0 15px 50px rgba(0,0,0,.3);
+
+overflow:hidden;
+
+text-align:center;
+
+color:white;
+}
+
+/* glass reflection */
+
+.glass-shine{
+position:absolute;
+top:-50%;
+left:-50%;
+
+width:200%;
+height:200%;
+
+background:
+linear-gradient(
+120deg,
+transparent 40%,
+rgba(255,255,255,.15) 50%,
+transparent 60%);
+
+animation:shine 8s linear infinite;
+}
+
+@keyframes shine{
+from{
+transform:translateX(-40%);
+}
+to{
+transform:translateX(40%);
+}
 }
 
 .logo{
-    font-size:32px;
-    font-weight:bold;
-    margin-bottom:20px;
+font-size:34px;
+font-weight:700;
+letter-spacing:2px;
+margin-bottom:25px;
 }
 
 .message{
-    font-size:28px;
-    line-height:1.8;
+font-size:32px;
+font-weight:700;
+line-height:1.8;
+position:relative;
+z-index:2;
+
+animation:fadeUp 1s ease;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(25px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.subtitle{
+margin-top:20px;
+font-size:18px;
+opacity:.85;
+position:relative;
+z-index:2;
+}
+
+@media(max-width:768px){
+
+.card{
+padding:35px;
+}
+
+.message{
+font-size:26px;
+}
+
+.logo{
+font-size:28px;
+}
+
 }
 
 </style>
+
 </head>
 
 <body>
 
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
 <div class="card">
+
+<div class="glass-shine"></div>
 
 <div class="logo">
 ASCO GROUP
 </div>
 
-<div class="message" id="message">
+<div id="message" class="message">
 جاري التحميل...
+</div>
+
+<div class="subtitle">
+Welcome To ASCO
 </div>
 
 </div>
 
 <script>
 
-const messages = {
+/* particles */
+
+for(let i=0;i<25;i++){
+
+const p=document.createElement('div');
+
+p.classList.add('particle');
+
+p.style.width=Math.random()*5+2+'px';
+p.style.height=p.style.width;
+
+p.style.left=Math.random()*100+'vw';
+
+p.style.bottom='-20px';
+
+p.style.animationDuration=
+(Math.random()*10+10)+'s';
+
+p.style.animationDelay=
+Math.random()*5+'s';
+
+document.body.appendChild(p);
+
+}
+
+/* messages */
+
+const messages={
 
 "001":"اهلاً بكم في ASCO",
-
 "002":"شكراً لجهودكم",
-
 "003":"نتمنى لكم دوام النجاح"
 
 };
